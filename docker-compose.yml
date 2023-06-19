@@ -1,0 +1,34 @@
+version: '3.7'
+
+services:
+  web:
+    build: .
+    volumes: &web-volumes
+      - &app-volume .:/task_manager:cached
+      - ~/.ssh:/root/.ssh
+      - ~/.bash_history:/root/.bash_history
+      - &bundle-cache-volume bundle_cache:/bundle_cache
+    ports:
+      - 3000:3000
+      - 3001:3001
+      - 3002:3002
+    depends_on:
+      - db
+    environment: &web-environment
+      BUNDLE_PATH: /bundle_cache
+      GEM_HOME: /bundle_cache
+      GEM_PATH: /bundle_cache
+      RAILS_PORT: 3000
+      RUBYOPT: -W:no-deprecated -W:no-experimental
+    command: bundle exec rails s -b '0.0.0.0' -p 3000
+
+  db:
+    image: postgres:11.4
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
+volumes:
+  bundle_cache:
