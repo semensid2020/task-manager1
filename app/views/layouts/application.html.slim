@@ -1,0 +1,32 @@
+doctype html
+html lang="en"
+  head
+    meta charset="utf-8"
+    meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1"
+    meta name="viewport" content="width=device-width, initial-scale=1.0"
+    title= content_for?(:title) ? yield(:title) : "Task Manager"
+    link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+    = stylesheet_link_tag "application", media: "all"
+    = csrf_meta_tags
+    - if !Rails.env.development?
+      = stylesheet_packs_with_chunks_tag "application", media: "all"
+
+
+  body
+    = javascript_packs_with_chunks_tag 'application'
+    header.mdl-layout__header
+      .mdl-layout__header-row
+        .material-icons tab
+        label.mdl-button.mdl-js-button.mdl-button--icon
+          i.material-icons
+        span.mdl-layout-title
+          = "Task Manager"
+        .mdl-layout-spacer
+        nav.mdl-navigation
+    main#main.mdl-layout__content
+      .page-content
+        = yield
+    footer#footer.mdl-mini-footer
+      .mdl-mini-footer__left-section
+        .mdl-logo
+          | &copy; Dualboot Learn 2022
