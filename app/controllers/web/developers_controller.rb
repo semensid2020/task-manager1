@@ -7,10 +7,10 @@ class Web::DevelopersController < Web::ApplicationController
     @developer = Developer.new(developer_params)
 
     if @developer.save
-      sign_in @developer
-      redirect_to :board
+      sign_in(@developer)
+      redirect_to(:board)
     else
-      render :new
+      render(:new)
     end
   end
 

@@ -10,6 +10,7 @@ html lang="en"
     = csrf_meta_tags
     - if !Rails.env.development?
       = stylesheet_packs_with_chunks_tag "application", media: "all"
+    = javascript_importmap_tags
 
 
   body
