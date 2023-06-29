@@ -1,6 +1,10 @@
 class Api::V1::ApplicationController < Api::ApplicationController
   RANSACK_DEFAULT_SORT = 'id ASC'
 
+  def self.responder
+    JsonResponder
+  end
+
   def build_meta(collection)
     {
       count: collection.count,
