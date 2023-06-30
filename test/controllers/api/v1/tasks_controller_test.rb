@@ -17,7 +17,7 @@ class Api::V1::TasksControllerTest < ActionController::TestCase
     author = create(:user)
     sign_in(author)
     assignee = create(:user)
-    task_attributes = attributes_for(:task).merge({ assignee_id: assignee.id })
+    task_attributes = attributes_for(:task).merge({ assignee_id: assignee.id, author_id: author.id })
     post :create, params: { task: task_attributes, format: :json }
     assert_response :created
 
