@@ -32,4 +32,8 @@ class Task < ApplicationRecord
       transition [:new_task, :released] => :archived
     end
   end
+
+  def self.ransackable_attributes(auth_object = nil)
+    ["id", "name", "description", "state", "author_id", "assignee_id", "created_at", "expired_at","updated_at"]
+  end
 end
