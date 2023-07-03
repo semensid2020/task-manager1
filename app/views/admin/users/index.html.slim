@@ -1,0 +1,39 @@
+h3 Users list
+.mdl-grid
+  .mdl-cell.mdl-cell--2-col
+    = link_to "Add new user", new_admin_user_path, class: "mdl-button mdl-js-button mdl-button--raised mdl-button--colored"
+  .mdl-cell.mdl-cell--8-col
+  .mdl-cell.mdl-cell--2-col
+    = search_form_for(@q, url:admin_users_url, method: :get) do |f|
+      .mdl-textfield.mdl-js-textfield
+        = f.search_field :email_cont, class: 'mdl-textfield__input'
+        = f.label :email_cont, class: 'mdl-textfield__label' do
+          i.material-icons search
+.mdl-grid
+  table.mdl-cell--12-col.mdl-data-table.mdl-js-data-table.mdl-shadow--2dp
+    thead
+      tr
+        th= sort_link(@q, :id, "#")
+        th= sort_link(@q, :first_name, "First Name")
+        th= sort_link(@q, :last_name, "Last Name")
+        th= sort_link(@q, :email, "Email")
+        th= sort_link(@q, :type, "Type")
+        th scope="col"  Actions
+    tbody
+      - @users.each do |user|
+        tr
+          td= user.id
+          td= user.first_name
+          td= user.last_name
+          td= user.email
+          td= user.type
+          td
+            => link_to "Edit", edit_admin_user_path(user)
+            -if current_user.id != user.id
+              =< link_to "Delete", admin_user_path(user), method: "delete"
+
+.mdl-grid
+  .mdl-cell.mdl-cell--10-col
+    = paginate @users
+  .mdl-cell.mdl-cell--2-col
+    = page_entries_info @users
