@@ -24,7 +24,7 @@
   "prettier/prettier": [ 2 , {
     "singleQuote": true,
     "trailingComma": "all",
-    "printWidth": 128
+    "printWidth": 120
   }],
   "no-param-reassign": ["error", { "props": true, "ignorePropertyModificationsFor": ["state"] }],
   "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
