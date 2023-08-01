@@ -77,9 +77,30 @@ function TaskBoard() {
   useEffect(() => loadBoard(), []);
   useEffect(() => generateBoard(), [boardCards]);
 
+  const handleCardDragEnd = (task, source, destination) => {
+    const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
+    if (!transition) {
+      return null;
+    }
+
+    return TasksRepository.update(task.id, {
+      task: {
+        stateEvent: transition.event,
+      },
+    })
+      .then(() => {
+        loadColumnInitial(destination.toColumnId);
+        loadColumnInitial(source.fromColumnId);
+      })
+      .catch((error) => {
+        alert(`Move failed! ${error.message}`);
+      });
+  };
+
   return (
     <div>
       <KanbanBoard
+        onCardDragEnd={handleCardDragEnd}
         renderCard={(card) => <Task task={card} />}
         renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
       >
