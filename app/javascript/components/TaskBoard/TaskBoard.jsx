@@ -5,6 +5,9 @@ import { propOr } from 'ramda';
 import Task from 'components/Task';
 import ColumnHeader from 'components/ColumnHeader';
 import TasksRepository from 'repositories/TasksRepository';
+import useStyles from './useStyles';
+import AddIcon from '@material-ui/icons/Add';
+import Fab from '@material-ui/core/Fab';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -28,6 +31,8 @@ const initialBoard = {
 function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
+
+  const styles = useStyles();
 
   const loadColumn = (state, page, perPage) =>
     TasksRepository.index({
@@ -99,6 +104,9 @@ function TaskBoard() {
 
   return (
     <div>
+      <Fab className={styles.addButton} color="primary" aria-label="add">
+        <AddIcon />
+      </Fab>
       <KanbanBoard
         onCardDragEnd={handleCardDragEnd}
         renderCard={(card) => <Task task={card} />}
