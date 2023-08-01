@@ -16,7 +16,6 @@ class Api::V1::TasksController < Api::V1::ApplicationController
   end
 
   def create
-    current_user ||= User.find(task_params[:author_id])
     task = current_user.my_tasks.new(task_params)
     task.save
 
