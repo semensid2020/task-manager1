@@ -10,6 +10,7 @@ import useStyles from './useStyles';
 import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import AddPopup from 'components/AddPopup';
+import EditPopup from 'components/EditPopup';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -33,12 +34,14 @@ const initialBoard = {
 const MODES = {
   ADD: 'add',
   NONE: 'none',
+  EDIT: 'edit',
 };
 
 function TaskBoard() {
   const [board, setBoard] = useState(initialBoard);
   const [boardCards, setBoardCards] = useState([]);
   const [mode, setMode] = useState(MODES.NONE);
+  const [openedTaskId, setOpenedTaskId] = useState(null);
 
   const styles = useStyles();
 
@@ -114,8 +117,14 @@ function TaskBoard() {
     setMode(MODES.ADD);
   };
 
+  const handleEditPopupOpen = (task) => {
+    setOpenedTaskId(task.id);
+    setMode(MODES.EDIT);
+  };
+
   const handleClose = () => {
     setMode(MODES.NONE);
+    setOpenedTaskId(null);
   };
 
   const handleTaskCreate = (params) => {
@@ -127,15 +136,42 @@ function TaskBoard() {
     });
   };
 
+  const loadTask = (id) => TasksRepository.show(id).then(({ data: { task } }) => task);
+
+  const handleTaskUpdate = (task) => {
+    const attributes = TaskForm.attributesToSubmit(task);
+
+    return TasksRepository.update(task.id, attributes).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+  };
+
+  const handleTaskDestroy = (task) => {
+    TasksRepository.destroy(task.id).then(() => {
+      loadColumnInitial(task.state);
+      handleClose();
+    });
+  };
+
   return (
     <div>
+      {mode === MODES.EDIT && (
+        <EditPopup
+          onCardLoad={loadTask}
+          onCardDestroy={handleTaskDestroy}
+          onCardUpdate={handleTaskUpdate}
+          onClose={handleClose}
+          cardId={openedTaskId}
+        />
+      )}
       {mode === MODES.ADD && <AddPopup onCardCreate={handleTaskCreate} onClose={handleClose} />}
       <Fab onClick={handleAddPopupOpen} className={styles.addButton} color="primary" aria-label="add">
         <AddIcon />
       </Fab>
       <KanbanBoard
         onCardDragEnd={handleCardDragEnd}
-        renderCard={(card) => <Task task={card} />}
+        renderCard={(card) => <Task onClick={handleEditPopupOpen} task={card} />}
         renderColumnHeader={(column) => <ColumnHeader column={column} onLoadMore={loadColumnMore} />}
       >
         {board}
