@@ -1,5 +1,5 @@
 class Api::V1::ApplicationController < Api::ApplicationController
-  RANSACK_DEFAULT_SORT = 'id ASC'
+  RANSACK_DEFAULT_SORT = 'updated_at DESC'.freeze
 
   def self.responder
     JsonResponder
@@ -16,7 +16,9 @@ class Api::V1::ApplicationController < Api::ApplicationController
   end
 
   def ransack_params
-    params.to_unsafe_h.fetch(:q, { s: RANSACK_DEFAULT_SORT })
+    parameters = params.to_unsafe_h.fetch(:q, {})
+    parameters[:s] ||= RANSACK_DEFAULT_SORT
+    parameters
   end
 
   def page
