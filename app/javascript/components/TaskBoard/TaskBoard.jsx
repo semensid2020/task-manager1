@@ -11,6 +11,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Fab from '@material-ui/core/Fab';
 import AddPopup from 'components/AddPopup';
 import EditPopup from 'components/EditPopup';
+import TaskPresenter from 'presenters/TaskPresenter';
 
 const STATES = [
   { key: 'new_task', value: 'New' },
@@ -94,14 +95,14 @@ function TaskBoard() {
   useEffect(() => generateBoard(), [boardCards]);
 
   const handleCardDragEnd = (task, source, destination) => {
-    const transition = task.transitions.find(({ to }) => destination.toColumnId === to);
+    const transition = TaskPresenter.transitions(task).find(({ to }) => destination.toColumnId === to);
     if (!transition) {
       return null;
     }
 
-    return TasksRepository.update(task.id, {
+    return TasksRepository.update(TaskPresenter.id(task), {
       task: {
-        stateEvent: transition.event,
+        stateEvent: TaskPresenter.transitions(task).event,
       },
     })
       .then(() => {
@@ -118,7 +119,7 @@ function TaskBoard() {
   };
 
   const handleEditPopupOpen = (task) => {
-    setOpenedTaskId(task.id);
+    setOpenedTaskId(TaskPresenter.id(task));
     setMode(MODES.EDIT);
   };
 
@@ -131,7 +132,7 @@ function TaskBoard() {
     const attributes = TaskForm.attributesToSubmit(params);
 
     return TasksRepository.create(attributes).then(({ data: { task } }) => {
-      loadColumnInitial(task.state);
+      loadColumnInitial(TaskPresenter.state(task));
       handleClose();
     });
   };
@@ -141,15 +142,15 @@ function TaskBoard() {
   const handleTaskUpdate = (task) => {
     const attributes = TaskForm.attributesToSubmit(task);
 
-    return TasksRepository.update(task.id, attributes).then(() => {
-      loadColumnInitial(task.state);
+    return TasksRepository.update(TaskPresenter.id(task), attributes).then(() => {
+      loadColumnInitial(TaskPresenter.state(task));
       handleClose();
     });
   };
 
   const handleTaskDestroy = (task) => {
-    TasksRepository.destroy(task.id).then(() => {
-      loadColumnInitial(task.state);
+    TasksRepository.destroy(TaskPresenter.id(task)).then(() => {
+      loadColumnInitial(TaskPresenter.state(task));
       handleClose();
     });
   };
