@@ -46,7 +46,7 @@ function Form({ errors, onChange, task }) {
       />
       <UserSelect
         label="Assignee"
-        value={task.assignee}
+        value={TaskPresenter.assignee(task)}
         onChange={handleChangeSelect('assignee')}
         error={has('assignee', errors)}
         helperText={errors.assignee}
