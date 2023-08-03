@@ -8,7 +8,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import InputLabel from '@material-ui/core/InputLabel';
 
 import UsersRepository from 'repositories/UsersRepository';
-
+import UserPresenter from 'presenters/UserPresenter';
 import useStyles from './useStyles';
 
 function UserSelect({ error, label, isClearable, isDisabled, isRequired, onChange, value, helperText }) {
@@ -25,7 +25,7 @@ function UserSelect({ error, label, isClearable, isDisabled, isRequired, onChang
           cacheOptions
           loadOptions={handleLoadOptions}
           defaultOptions
-          getOptionLabel={(user) => `${user.firstName} ${user.lastName}`}
+          getOptionLabel={(user) => UserPresenter.fullName(user)}
           getOptionValue={(user) => user.id}
           isDisabled={isDisabled}
           isClearable={isClearable}
@@ -49,8 +49,17 @@ UserSelect.propTypes = {
   isDisabled: PropTypes.bool,
   isRequired: PropTypes.bool,
   onChange: PropTypes.func,
-  value: PropTypes.shape(),
+  value: UserPresenter.shape(),
   helperText: PropTypes.string,
+};
+
+UserSelect.defaultProps = {
+  isClearable: false,
+  isDisabled: false,
+  isRequired: false,
+  value: null,
+  error: false,
+  helperText: null,
 };
 
 export default UserSelect;
