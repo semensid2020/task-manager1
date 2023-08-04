@@ -1,6 +1,7 @@
+$stdout.write("rails db:seed started.\n")
 admin = Admin.find_or_create_by(first_name: 'admin', last_name: 'admin', email: 'admin@localhost')
 admin.password = 'admin'
-admin.save
+p admin if admin.save
 
 60.times do |i|
   u = [Manager, Developer].sample.new
@@ -8,5 +9,6 @@ admin.save
   u.first_name = "FN#{i}"
   u.last_name = "LN#{i}"
   u.password = "#{i}"
-  u.save
+  p u if u.save
 end
+$stdout.write("rails db:seed finished.\n")
