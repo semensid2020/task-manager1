@@ -1,5 +1,5 @@
 $stdout.write("rails db:seed started.\n")
-admin = Admin.find_or_create_by(first_name: 'admin', last_name: 'admin', email: 'admin@localhost')
+admin = Admin.find_or_create_by(first_name: 'admin', last_name: 'admin', email: 'admin@mail.gen')
 admin.password = 'admin'
 p admin if admin.save
 
