@@ -17,3 +17,12 @@ body {
 .page-content .mdl-textfield {
   display: block;
 }
+
+[data-rbd-droppable-id="board-droppable"] {
+  min-width: 1792px;
+  display: flex;
+}
+
+.react-kanban-column {
+  flex: 1;
+}

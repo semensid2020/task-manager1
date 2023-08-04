@@ -21,7 +21,7 @@ html lang="en"
         label.mdl-button.mdl-js-button.mdl-button--icon
           i.material-icons
         span.mdl-layout-title
-          = "Task Manager"
+          = "Task Manager. Environment: #{Rails.env}"
         .mdl-layout-spacer
         nav.mdl-navigation
           = link_to "Board", board_path, class: 'mdl-navigation__link'
