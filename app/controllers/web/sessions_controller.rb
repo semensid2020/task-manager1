@@ -1,5 +1,6 @@
 class Web::SessionsController < Web::ApplicationController
   def new
+    redirect_to(:board) if current_user
     @session = SessionForm.new
   end
 
