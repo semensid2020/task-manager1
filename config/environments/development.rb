@@ -75,4 +75,5 @@ Rails.application.configure do
   # config.action_cable.disable_request_forgery_protection = true
   # Previewing PRs code running in sandbox at https://uffizzi.com/
   config.hosts << '.app.uffizzi.com'
+  config.hosts << '.taskmanager1-service.onrender.com'
 end
